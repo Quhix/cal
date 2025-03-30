@@ -17,7 +17,7 @@ export default function Quhixcal() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get("http://https://cal-backend-hc3r.onrender.com//events");
+        const response = await axios.get("http://https:/cal-backend-hc3r.onrender.com/events");
         setEvents(response.data);
       } catch (error) {
         console.error("Error fetching events:", error);
@@ -44,8 +44,8 @@ export default function Quhixcal() {
     }
 
     try {
-      await axios.post("http://https://cal-backend-hc3r.onrender.com//events", newEvent);
-      const response = await axios.get("http://https://cal-backend-hc3r.onrender.com//events");
+      await axios.post("http://https:/cal-backend-hc3r.onrender.com/events", newEvent);
+      const response = await axios.get("http://https:/cal-backend-hc3r.onrender.com/events");
       setEvents(response.data);
       setOpen(false);
       setNewEvent({ title: "", date: "", recurrence: "none" });
