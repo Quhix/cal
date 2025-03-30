@@ -1,38 +1,91 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap');
+
+/* General styles */
+body {
+  font-family: 'Lexend', sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Light mode */
+body.light-mode {
+  background-color: #F9A825;
+  color: #000;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Dark mode */
+body.dark-mode {
+  background-color: #000;
+  color: #F9A825;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Center content */
+#root {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  min-height: 100vh;
+  text-align: center;
+  padding: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+/* Header styles */
+h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+p {
+  font-size: 1.1rem;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+/* Switch container */
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+/* Button styles */
+button.MuiButton-root {
+  background-color: #000 !important;
+  color: #F9A825 !important;
+  font-weight: bold;
+  font-size: 1rem;
+  font-family: 'Lexend', sans-serif;
+  border-radius: 8px;
+  padding: 10px 15px;
+  text-transform: none;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button.MuiButton-root:hover {
+  background-color: #333 !important;
+}
+
+/* Calendar styling */
+.fc {
+  width: 100%;
+  max-width: 800px;
+}
+
+.fc-daygrid-day {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.fc-daygrid-day-number {
+  color: inherit;
+  font-weight: 400;
+  font-family: 'Lexend', sans-serif;
+}
+
+.fc-toolbar-title {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
