@@ -6,6 +6,10 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
+const API_ENDPOINT = "http://https:/cal-backend-hc3r.onrender.com/events";
+
+const RECURRENCE_VALUES = ["none", "daily", "weekly", "monthly"];
+
 export default function Quhixcal() {
   const [darkMode, setDarkMode] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -13,14 +17,15 @@ export default function Quhixcal() {
   const [events, setEvents] = useState([]);
   const [open, setOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({ title: "", date: "", recurrence: "none" });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get("http://https:/cal-backend-hc3r.onrender.com/events");
+        const response = await axios.get(API_ENDPOINT);
         setEvents(response.data);
       } catch (error) {
-        console.error("Error fetching events:", error);
+        setError("Error fetching events: " + error.message);
       }
     };
 
@@ -28,9 +33,13 @@ export default function Quhixcal() {
   }, []);
 
   useEffect(() => {
+    updateBodyStyles(darkMode);
+  }, [darkMode]);
+
+  const updateBodyStyles = (darkMode) => {
     document.body.style.backgroundColor = darkMode ? "#000" : "#F9A825";
     document.body.style.color = darkMode ? "#F9A825" : "#000";
-  }, [darkMode]);
+  };
 
   const handleDateClick = (info) => {
     setNewEvent({ ...newEvent, date: info.dateStr });
@@ -44,13 +53,13 @@ export default function Quhixcal() {
     }
 
     try {
-      await axios.post("http://https:/cal-backend-hc3r.onrender.com/events", newEvent);
-      const response = await axios.get("http://https:/cal-backend-hc3r.onrender.com/events");
+      await axios.post(API_ENDPOINT, newEvent);
+      const response = await axios.get(API_ENDPOINT);
       setEvents(response.data);
       setOpen(false);
       setNewEvent({ title: "", date: "", recurrence: "none" });
     } catch (error) {
-      console.error("Error creating event:", error);
+      setError("Error creating event: " + error.message);
     }
   };
 
@@ -58,6 +67,7 @@ export default function Quhixcal() {
     <div className="p-4">
       <h1 className="text-2xl font-bold">Quhixcal</h1>
       <p>Your open-source calendar alternative.</p>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <div className="flex items-center gap-2">
         <LightMode />
         <Switch checked={darkMode} onChange={() => setDarkMode(!darkMode)} />
@@ -107,15 +117,18 @@ export default function Quhixcal() {
             value={newEvent.recurrence}
             onChange={(e) => setNewEvent({ ...newEvent, recurrence: e.target.value })}
           >
-            <MenuItem value="none">None</MenuItem>
-            <MenuItem value="daily">Daily</MenuItem>
-            <MenuItem value="weekly">Weekly</MenuItem>
-            <MenuItem value="monthly">Monthly</MenuItem>
+            {RECURRENCE_VALUES.map((value) => (
+              <MenuItem key={value} value={value}>
+                {value}
+              </MenuItem>
+            ))}
           </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
-          <Button onClick={handleSubmit} color="primary">Add</Button>
+          <Button onClick={handleSubmit} color="primary">
+            Add
+          </Button>
         </DialogActions>
       </Dialog>
     </div>
